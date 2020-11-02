@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leo/components/appbar.dart';
 import 'package:leo/config/colors.dart';
 import 'package:leo/components/card.dart';
 import 'package:leo/views/coming_soon.dart';
@@ -17,28 +18,7 @@ class _Options extends State<Options> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColor.bgcolor,
-          elevation: 0,
-          leading: GestureDetector(
-            onTap: () {/* Write listener code here */},
-            child: Icon(
-              Icons.menu, // add custom icons also
-              color: AppColor.primarytextcolor,
-            ),
-          ),
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(right: 20.0, top: 20.0),
-                child: InkWell(
-                  child: Text("Dine In >",
-                      style: TextStyle(
-                        color: AppColor.primarytextcolor,
-                      )),
-                  onTap: () {},
-                )),
-          ],
-        ),
+        appBar: CustomAppBar().defaultAppBar(),
         backgroundColor: AppColor.bgcolor,
         body: Center(
             child: Wrap(

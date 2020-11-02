@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leo/components/bottomnavbar.dart';
+import 'package:leo/components/category_tile.dart';
 import 'package:leo/config/colors.dart';
 import 'package:leo/components/card.dart';
 import 'package:leo/views/coming_soon.dart';
@@ -51,315 +52,38 @@ class _Category extends State<Category> {
             child: ListView(shrinkWrap: true, children: <Widget>[
               //alignment: WrapAlignment.spaceEvenly,
               // runAlignment: WrapAlignment.start,
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: ClayContainer(
-                  color: baseColor,
-                  height: 100,
-                  width: width * 0.8,
-                  borderRadius: 10,
-                  child: GestureDetector(
-                    onTap: () { 
-                      Navigator.pushReplacement(
-                            context, 
-                            PageRouteBuilder(
-                              pageBuilder: (context, a1, a2) => Food(),
-                          ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          padding: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image(
-                                height: 100,
-                                image: AssetImage('images/pizza.jpg')),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Pizza",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Text(
-                                  "Explore our varieteies",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                Text(
-                                  "See all >",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColor.primarytextcolor),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+              CategoryTile(
+                image: 'images/pizza.jpg',
+                title: 'Pizza',
+                subtitle: 'Explore our varieteies',
+                pushTo: Food(),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: ClayContainer(
-                  color: baseColor,
-                  height: 100,
-                  width: width * 0.8,
-                  borderRadius: 10,
-                  child: GestureDetector(
-                    onTap: () { 
-                      Navigator.pushReplacement(
-                            context, 
-                            PageRouteBuilder(
-                              pageBuilder: (context, a1, a2) => Food(),
-                          ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          padding: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image(
-                                height: 100,
-                                image: AssetImage('images/burger.jpg')),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Burgers",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Text(
-                                  "Aren't they mouth-watering",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                Text(
-                                  "See all >",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColor.primarytextcolor),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+              CategoryTile(
+                image: 'images/burger.jpg',
+                title: 'Burgers',
+                subtitle: "Aren't they mouth-watering",
+                pushTo: Food(),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: ClayContainer(
-                  color: baseColor,
-                  height: 100,
-                  width: width * 0.8,
-                  borderRadius: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ComingSoon()),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          padding: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image(
-                                height: 100,
-                                image: AssetImage('images/coffee.jpg')),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Caffeine",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Text(
-                                  "Let us help you with the work",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                Text(
-                                  "See all >",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColor.primarytextcolor),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+              CategoryTile(
+                image: 'images/coffee.jpg',
+                title: 'Coffee',
+                subtitle: "Let us help you with the work",
+                pushTo: Food(),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: ClayContainer(
-                  color: baseColor,
-                  height: 100,
-                  width: width * 0.8,
-                  borderRadius: 10,
-                  child: GestureDetector(
-                    onTap: () { 
-                      Navigator.pushReplacement(
-                            context, 
-                            PageRouteBuilder(
-                              pageBuilder: (context, a1, a2) => Food(),
-                          ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          padding: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image(
-                                height: 100,
-                                image: AssetImage('images/Juice.jpg')),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Juices",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Text(
-                                  "It's time to be healthy",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                Text(
-                                  "See all >",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColor.primarytextcolor),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+              CategoryTile(
+                image: 'images/Juice.jpg',
+                title: 'Juices',
+                subtitle: "It's time to be healthy",
+                pushTo: Food(),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: ClayContainer(
-                  color: baseColor,
-                  height: 100,
-                  width: width * 0.8,
-                  borderRadius: 10,
-                  child: GestureDetector(
-                    onTap: () { 
-                      Navigator.pushReplacement(
-                            context, 
-                            PageRouteBuilder(
-                              pageBuilder: (context, a1, a2) => Food(),
-                          ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          padding: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image(
-                                height: 100,
-                                image: AssetImage('images/desert.jpg')),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Deserts",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Text(
-                                  "Right at the end for you",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                Text(
-                                  "See all >",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColor.primarytextcolor),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+              CategoryTile(
+                image: 'images/desert.jpg',
+                title: 'Desserts',
+                subtitle: "Right at the end for you",
+                pushTo: Food(),
               ),
-              ]),
-          );    
+              ]
+            ),
+          );
   }
 }
