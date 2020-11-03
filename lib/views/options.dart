@@ -8,6 +8,7 @@ import 'package:leo/views/dine_in.dart';
 import '../config/colors.dart';
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/rendering.dart';
+import 'package:leo/views/enter_manually.dart';
 
 class Options extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _Options extends State<Options> {
                   onTap: () {
                     Navigator.push(
                       context,
-                       MaterialPageRoute(builder: (context) => DineIn()),
+                       MaterialPageRoute(builder: (context) => EnterManually()),
                     );
                   },
                   child: Column(

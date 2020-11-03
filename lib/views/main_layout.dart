@@ -12,21 +12,35 @@ import 'package:leo/views/cart.dart';
 import 'package:leo/views/profile.dart';
 
 class MainLayout extends StatefulWidget {
+  Map<String, dynamic> data;
+
+  MainLayout({Key key, this.data}) : super(key: key);
   @override
   _MainLayout createState() => _MainLayout();
+
 }
 
 class _MainLayout extends State<MainLayout> {
+ 
   final _formKey = GlobalKey<FormState>();
+  Map<String, dynamic> data;
+  
   bool valuefirst = false;
   bool valuesecond = false;
   bool valuethird = false;
   bool valuefourth = false;
    int _selectedIndex = 0;
+   
+   List<Widget> _widgetOptions;
    static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    Menu(),
+    @override  
+    void initState() {
+    
+    super.initState();
+   
+   _widgetOptions =[
+    Menu(jsonData:widget.data),
     Cart(),
     ProfilePage(),
     Text(
@@ -34,6 +48,7 @@ class _MainLayout extends State<MainLayout> {
       style: optionStyle,
     ),
   ];
+       }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,6 +58,7 @@ class _MainLayout extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    //print(widget.data);
     Color baseColor = Color(0xFF181818);
     return Scaffold(
       appBar: AppBar(
@@ -57,6 +73,7 @@ class _MainLayout extends State<MainLayout> {
         ),
         actions: <Widget>[
           Padding(
+            
               padding: EdgeInsets.only(right: 20.0, top: 20.0),
               child: InkWell(
                 child: Text("<",
@@ -69,7 +86,7 @@ class _MainLayout extends State<MainLayout> {
         ],
       ),
       backgroundColor: AppColor.bgcolor,
-      body: _widgetOptions[_selectedIndex],
+      body:  _widgetOptions[_selectedIndex],
       bottomNavigationBar: 
        ClayContainer(
         color: baseColor,

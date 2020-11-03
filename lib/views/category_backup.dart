@@ -19,7 +19,6 @@ class Category extends StatefulWidget {
 
 class _Category extends State<Category> {
   final _formKey = GlobalKey<FormState>();
-  int categoryId;
   bool valuefirst = false;
   bool valuesecond = false;
   bool valuethird = false;
@@ -52,19 +51,41 @@ class _Category extends State<Category> {
     double width = MediaQuery.of(context).size.width;
 
     return Expanded(
-            child: ListView.builder(
-              itemCount: widget.newdata["categories"].length,
-              itemBuilder: (BuildContext context, int index) {
-                return CategoryTile(
+            child: ListView(shrinkWrap: true, children: <Widget>[
+              //alignment: WrapAlignment.spaceEvenly,
+              // runAlignment: WrapAlignment.start,
+              CategoryTile(
                 image: 'images/pizza.jpg',
-                title: widget.newdata["categories"][index]["name"],
-                subtitle: widget.newdata["categories"][index]["description"],
-                pushTo: Food(jsonData: widget.newdata, categoryId: widget.newdata["categories"][index]["id"]),
-               
-                );
-              
-              }),
-            
+                title: 'Pizza',
+                subtitle: 'Explore our varieteies',
+                pushTo: Food(),
+              ),
+              CategoryTile(
+                image: 'images/burger.jpg',
+                title: 'Burgers',
+                subtitle: "Aren't they mouth-watering",
+                pushTo: Food(),
+              ),
+              CategoryTile(
+                image: 'images/coffee.jpg',
+                title: 'Coffee',
+                subtitle: "Let us help you with the work",
+                pushTo: Food(),
+              ),
+              CategoryTile(
+                image: 'images/Juice.jpg',
+                title: 'Juices',
+                subtitle: "It's time to be healthy",
+                pushTo: Food(),
+              ),
+              CategoryTile(
+                image: 'images/desert.jpg',
+                title: 'Desserts',
+                subtitle: "Right at the end for you",
+                pushTo: Food(),
+              ),
+              ]
+            ),
           );
   }
 }
