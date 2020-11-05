@@ -12,11 +12,13 @@ class FirstView extends StatefulWidget {
 }
 
 class _FirstView extends State<FirstView> {
+  final GlobalKey _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar().defaultAppBar(),
+      key: _key,
+      appBar: CustomAppBar().defaultAppBar(_key),
       backgroundColor: AppColor.bgcolor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,7 +52,8 @@ class _FirstView extends State<FirstView> {
               }
             ),
         ],
-      )
+      ),
+      drawer: Container(),
     );
   }
 }

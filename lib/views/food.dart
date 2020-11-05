@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:leo/components/appbar.dart';
 import 'package:leo/components/bottomnavbar.dart';
+import 'package:leo/components/hamburger_menu.dart';
 import 'package:leo/config/colors.dart';
 import 'package:leo/components/card.dart';
 import 'package:leo/views/coming_soon.dart';
@@ -30,6 +32,7 @@ class Food extends StatefulWidget {
 
 class _Food extends State<Food> {
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey _key = GlobalKey<ScaffoldState>();
   bool valuefirst = false;
   bool valuesecond = false;
   List<Map> filteredList;
@@ -66,28 +69,8 @@ class _Food extends State<Food> {
     Color baseColor = Color(0xFF181818);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.bgcolor,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {/* Write listener code here */},
-          child: Icon(
-            Icons.menu, // add custom icons also
-            color: AppColor.primarytextcolor,
-          ),
-        ),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0, top: 20.0),
-              child: InkWell(
-                  child: Text("<",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppColor.primarytextcolor,
-                      )),
-                  onTap: () {})),
-        ],
-      ),
+      key: _key,
+      appBar: CustomAppBar().defaultAppBar(_key),
       backgroundColor: AppColor.bgcolor,
       body: 
       Column(children: <Widget>[
@@ -519,6 +502,7 @@ class _Food extends State<Food> {
         
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      drawer: HamMenu(currSelected: 1,),
       );
   }
 }
