@@ -52,14 +52,12 @@ class _Food extends State<Food> {
   }
 
   void addtocart(item){
-   // cart = List();
     cart.add(item);
     print(cart);
     
 
   }
   void removefromcart(item){
-    //cart = List();
     cart.remove(item);
     print(cart);
   }
@@ -259,9 +257,10 @@ class _Food extends State<Food> {
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                   child: Badge(
                                       shape: BadgeShape.square,
-                                      badgeColor: Colors.green,
+                                      
+                                      badgeColor: getItemBadgeColor(filteredList[index]["item_type"]),
                                       borderRadius: BorderRadius.circular(5),
-                                      badgeContent: Text('Veg',
+                                      badgeContent: Text( filteredList[index]["item_type"],
                                           style:
                                               TextStyle(color: Colors.white))),
                                 ),
@@ -505,4 +504,15 @@ class _Food extends State<Food> {
       drawer: HamMenu(currSelected: 1,),
       );
   }
+Color getItemBadgeColor(String itemType) {
+ if (itemType == "Veg") {
+    return Colors.green;
+ } else if (itemType == "Non-veg"){
+   return Colors.red;
+ }
+   else if (itemType == "Jain"){
+   return Colors.blue;
+  }
 }
+}
+
