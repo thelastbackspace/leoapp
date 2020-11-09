@@ -218,7 +218,7 @@ class _Food extends State<Food> {
 
               gridDelegate:
               new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-   childAspectRatio: MediaQuery.of(context).size.height / 1050,),
+   childAspectRatio: MediaQuery.of(context).size.height / 1200,),
               itemBuilder: (BuildContext context, int index) {
                 return 
 
