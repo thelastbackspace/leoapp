@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:leo/components/appbar.dart';
 import 'package:leo/components/bottomnavbar.dart';
+import 'package:leo/components/hamburger_menu.dart';
 import 'package:leo/config/colors.dart';
 import 'package:leo/components/card.dart';
 import 'package:leo/views/coming_soon.dart';
@@ -14,45 +16,61 @@ import 'package:leo/views/caffiene.dart';
 import 'package:leo/views/juice.dart';
 import 'package:leo/views/desert.dart';
 import 'package:leo/views/burger.dart';
+import 'package:leo/components/category_tile.dart';
 
 
 class Food extends StatefulWidget {
+  Map<String, dynamic> jsonData;
+  Food({Key key, this.jsonData, this.categoryId}) : super(key: key);
+  final int categoryId;
+  // etc
+  // Map<String, dynamic> jsonData;
+  //  Menu({Key key, this.jsonData}) : super(key: key);
   @override
   _Food createState() => _Food();
 }
 
 class _Food extends State<Food> {
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey _key = GlobalKey<ScaffoldState>();
   bool valuefirst = false;
   bool valuesecond = false;
+  List<Map> filteredList;
   bool valuethird = false;
+  int index = 0;
+  Map<String, dynamic> item;
+  List<Map> cart;
+ @override
+  void initState() {
+     filteredList = List();
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId) {
+           filteredList.add(item);
+        }
+        }
+    super.initState();
+  }
+
+  void addtocart(item){
+   // cart = List();
+    cart.add(item);
+    print(cart);
+    
+
+  }
+  void removefromcart(item){
+    //cart = List();
+    cart.remove(item);
+    print(cart);
+  }
   @override
   Widget build(BuildContext context) {
+    print(filteredList);
     Color baseColor = Color(0xFF181818);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.bgcolor,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {/* Write listener code here */},
-          child: Icon(
-            Icons.menu, // add custom icons also
-            color: AppColor.primarytextcolor,
-          ),
-        ),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0, top: 20.0),
-              child: InkWell(
-                  child: Text("<",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppColor.primarytextcolor,
-                      )),
-                  onTap: () {})),
-        ],
-      ),
+      key: _key,
+      appBar: CustomAppBar().defaultAppBar(_key),
       backgroundColor: AppColor.bgcolor,
       body: 
       Column(children: <Widget>[
@@ -62,7 +80,7 @@ class _Food extends State<Food> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Writer's Cafe",
+                widget.jsonData["branch"][0]["name"],
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -193,15 +211,22 @@ class _Food extends State<Food> {
                 ]),
           ),
         ),
-        Wrap(
-            alignment: WrapAlignment.spaceEvenly,
-             runAlignment: WrapAlignment.center,
-            spacing: 40.0, // gap between adjacent chips
-             runSpacing: 25.0, // gap between lines
-            children: <Widget>[
-              ClayContainer(
+        Expanded(
+        child: GridView.builder(
+              
+              itemCount: filteredList.length,
+
+              gridDelegate:
+              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+   childAspectRatio: MediaQuery.of(context).size.height / 1050,),
+              itemBuilder: (BuildContext context, int index) {
+                return 
+
+                Padding(
+                  padding:const EdgeInsets.fromLTRB(25, 25, 25, 25),
+                  child:ClayContainer(
                   color: baseColor,
-                  //height: 100,
+                  height: 100,
                   width: width * 0.4,
                   borderRadius: 10,
                   child: Padding(
@@ -243,7 +268,7 @@ class _Food extends State<Food> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                   child: Text(
-                                    "Barbaque Pizza",
+                                    filteredList[index]["item_name"],
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.white),
@@ -254,7 +279,7 @@ class _Food extends State<Food> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "₹ 599 ",
+                                        filteredList[index]["item_rate"].toString(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             fontSize: 20, color: Colors.grey),
@@ -279,7 +304,12 @@ class _Food extends State<Food> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Badge(
+                                        GestureDetector(
+                                        onTap: () {
+                                          print("Tapped -");
+                                          removefromcart(filteredList[index]);
+                                        },
+                                        child:Badge(
                                           shape: BadgeShape.square,
                                           badgeColor: AppColor.primarytextcolor,
                                           borderRadius:
@@ -293,6 +323,7 @@ class _Food extends State<Food> {
                                                     fontSize: 15,
                                                   ))),
                                         ),
+                                        ),
                                         Badge(
                                           shape: BadgeShape.square,
                                           badgeColor: AppColor.bgcolor,
@@ -301,13 +332,18 @@ class _Food extends State<Food> {
                                           badgeContent: Padding(
                                               padding: EdgeInsets.fromLTRB(
                                                   4, 0, 4, 0),
-                                              child: Text('0',
+                                              child: Text("0",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 15,
                                                   ))),
                                         ),
-                                        Badge(
+                                        GestureDetector(
+                                        onTap: () {
+                                          print("Tapped +");
+                                          addtocart(filteredList[index]);
+                                        },
+                                        child: Badge(
                                           shape: BadgeShape.square,
                                           badgeColor: AppColor.primarytextcolor,
                                           borderRadius:
@@ -321,134 +357,6 @@ class _Food extends State<Food> {
                                                     fontSize: 15,
                                                   ))),
                                         ),
-                                      ]),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ),
-                  )),
-              ClayContainer(
-                  color: baseColor,
-                  //height: 100,
-                  width: width * 0.4,
-                  borderRadius: 10,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 160,
-                          padding: EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              child: Align(
-                                alignment: Alignment.center,
-                                heightFactor: 0.50,
-                                child: Image(image: AssetImage('images/pizza/3.jpg')),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: Badge(
-                                      shape: BadgeShape.square,
-                                      badgeColor: Colors.green,
-                                      borderRadius: BorderRadius.circular(5),
-                                      badgeContent: Text('Veg',
-                                          style:
-                                              TextStyle(color: Colors.white))),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: Text(
-                                    "Italino Pizza",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                ),
-                                Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "₹ 899 ",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.grey),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                        child: Text(
-                                          "₹999 ",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        ),
-                                      ),
-                                    ]),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Badge(
-                                          shape: BadgeShape.square,
-                                          badgeColor: AppColor.primarytextcolor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          badgeContent: Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  6, 0, 6, 0),
-                                              child: Text('-',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                  ))),
-                                        ),
-                                        Badge(
-                                          shape: BadgeShape.square,
-                                          badgeColor: AppColor.bgcolor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          badgeContent: Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  4, 0, 4, 0),
-                                              child: Text('0',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                  ))),
-                                        ),
-                                        Badge(
-                                          shape: BadgeShape.square,
-                                          badgeColor: AppColor.primarytextcolor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          badgeContent: Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  3, 0, 3, 0),
-                                              child: Text('+',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                  ))),
                                         ),
                                       ]),
                                 ),
@@ -456,10 +364,14 @@ class _Food extends State<Food> {
                         )
                       ],
                     ),
-                  )),
-              
-              ]),
-      ]),
+                  ),
+        ));
+
+      }
+      )
+      
+         ) ]
+      ),
       floatingActionButton: FloatingActionButton(
        onPressed: () {
           showModalBottomSheet<void>(
@@ -590,6 +502,7 @@ class _Food extends State<Food> {
         
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      drawer: HamMenu(currSelected: 1,),
       );
   }
 }

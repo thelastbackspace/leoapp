@@ -11,20 +11,26 @@ import 'package:leo/views/food.dart';
 import 'package:leo/views/category.dart';
 
 class Menu extends StatefulWidget {
-  @override
+   Map<String, dynamic> jsonData;
+   Menu({Key key, this.jsonData}) : super(key: key);
   _Menu createState() => _Menu();
 }
 
 class _Menu extends State<Menu> {
   final _formKey = GlobalKey<FormState>();
+  Map<String, dynamic> data;
   bool valuefirst = false;
   bool valuesecond = false;
   bool valuethird = false;
    int _selectedIndex = 0;
+     List<Widget> _widgetOptions;
    static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    Category(),
+    @override  
+    void initState() {
+    super.initState();
+   _widgetOptions =[
+    Category(newdata:widget.jsonData),
     Text(
       'Index 2: Cart',
       style: optionStyle,
@@ -34,6 +40,7 @@ class _Menu extends State<Menu> {
       style: optionStyle,
     ),
   ];
+    }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,11 +51,13 @@ class _Menu extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.jsonData["branch"][0]["name"]);
     Color baseColor = Color(0xFF181818);
     double width = MediaQuery.of(context).size.width;
 
     //return  _widgetOptions[_selectedIndex];
-    return  Column(
+    return 
+    Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(25.0),
@@ -56,7 +65,7 @@ class _Menu extends State<Menu> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Writer's Cafe",
+                  widget.jsonData["branch"][0]["name"],
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

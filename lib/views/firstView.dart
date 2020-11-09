@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leo/components/appbar.dart';
 import 'package:leo/config/colors.dart';
 import 'package:leo/components/button.dart';
 import 'package:leo/views/options.dart';
@@ -11,31 +12,13 @@ class FirstView extends StatefulWidget {
 }
 
 class _FirstView extends State<FirstView> {
+  final GlobalKey _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.bgcolor,
-        elevation: 0,
-        leading: GestureDetector(
-            onTap: () { /* Write listener code here */ },
-            child: Icon(
-              Icons.menu,  // add custom icons also
-              color: AppColor.primarytextcolor,
-            ),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0, top: 20.0),
-            child: InkWell(
-              child: Text("Dine In >",
-              style: TextStyle(color: AppColor.primarytextcolor,)),
-              onTap: () {},
-            )
-         ),
-        ],
-      ),
+      key: _key,
+      appBar: CustomAppBar().defaultAppBar(_key),
       backgroundColor: AppColor.bgcolor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,7 +52,8 @@ class _FirstView extends State<FirstView> {
               }
             ),
         ],
-      )
+      ),
+      drawer: Container(),
     );
   }
 }

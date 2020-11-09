@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:leo/views/firstView.dart';
 import 'package:leo/views/main_layout.dart';
+import 'package:leo/views/enter_manually.dart';
 
 
-void main() => runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    initialRoute: '/firstview',
-    routes: {
-     // '/': (context) => Loading(),
-      '/firstview': (context) => FirstView(),
-    }
-));
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/firstview',
+        routes: {
+          // '/': (context) => Loading(),
+          '/firstview': (context) => FirstView(),
+        }
+    );
+  }
+}

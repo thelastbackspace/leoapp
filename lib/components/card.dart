@@ -21,8 +21,8 @@ class NeuCard extends StatelessWidget {
     Row(mainAxisSize: MainAxisSize.min,
   children: <Widget>[
      Container(
-      height: 150,
-      width: 150,
+//      height: 150,
+//      width: 150,
      //margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       margin: const EdgeInsets.all(15),
       padding: EdgeInsets.all(20.0),
