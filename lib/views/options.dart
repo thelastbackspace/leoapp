@@ -9,6 +9,7 @@ import '../config/colors.dart';
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/rendering.dart';
 import 'package:leo/views/enter_manually.dart';
+import 'package:leo/components/hamburger_menu.dart';
 
 class Options extends StatefulWidget {
   @override
@@ -16,10 +17,12 @@ class Options extends StatefulWidget {
 }
 
 class _Options extends State<Options> {
+    final GlobalKey _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar().defaultAppBar(),
+       key: _key,
+        appBar: CustomAppBar().defaultAppBar(_key),
         backgroundColor: AppColor.bgcolor,
         body: Center(
             child: Wrap(

@@ -7,6 +7,7 @@ import 'package:leo/views/login.dart';
 import 'package:leo/views/mobile_login.dart';
 import 'package:leo/views/mobile_signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:leo/components/hamburger_menu.dart';
 
 
 import '../config/colors.dart';
@@ -17,6 +18,7 @@ class FirstView extends StatefulWidget {
 }
 
 class _FirstView extends State<FirstView> {
+  final GlobalKey _key = GlobalKey<ScaffoldState>();
 
 SharedPreferences sharedPreferences;
   @override
@@ -35,44 +37,9 @@ SharedPreferences sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
-    String shubh;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.bgcolor,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {/* Write listener code here */},
-          child: Icon(
-            Icons.menu, // add custom icons also
-            color: AppColor.primarytextcolor,
-          ),
-        ),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 0.0, top: 20.0),
-              child: FlatButton(
-                    onPressed: () {
-                      shubh = sharedPreferences.getString("token");
-                  print(shubh);
-                  
-                    sharedPreferences.clear();
-                    sharedPreferences.commit();
-                    Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => MobileSignin()),
-                    (Route<dynamic> route) => false);
-                },
-
-                    child: Text(
-                  "Log out >",
-                    style: TextStyle(
-                      color: AppColor.primarytextcolor,
-                    )),
-                  ),
-              ),
-        ],
-      ),
-      backgroundColor: AppColor.bgcolor,
+      key: _key,
+      appBar: CustomAppBar().defaultAppBar(_key), backgroundColor: AppColor.bgcolor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
