@@ -25,7 +25,9 @@ class _Options extends State<Options> {
        key: _key,
         appBar: CustomAppBar().defaultAppBar(_key),
         backgroundColor: AppColor.bgcolor,
-        body: Center(
+        body:  SingleChildScrollView(
+          child: Container(
+            child: Center(
                 child: Wrap(
                 alignment: WrapAlignment.spaceEvenly,
                 runAlignment: WrapAlignment.center,
@@ -212,6 +214,6 @@ class _Options extends State<Options> {
               ),
 
           ],
-        )));
+        )))));
   }
 }
