@@ -20,44 +20,51 @@ class _Options extends State<Options> {
     final GlobalKey _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+     double side = MediaQuery.of(context).size.width > MediaQuery.of(context).size.height ? (MediaQuery.of(context).size.height - 40)/3 : (MediaQuery.of(context).size.width - 40)/3;
     return Scaffold(
        key: _key,
         appBar: CustomAppBar().defaultAppBar(_key),
         backgroundColor: AppColor.bgcolor,
         body: Center(
-            child: Wrap(
-            alignment: WrapAlignment.spaceEvenly,
-            runAlignment: WrapAlignment.center,
-            children: <Widget>[
-              NeuCard(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                       MaterialPageRoute(builder: (context) => Scan()),
-                    );
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(5.0),
-                        child: Image(
-                            height: 80,
-                            image: AssetImage('images/dine_in.png')),
+                child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                runAlignment: WrapAlignment.center,
+                children: <Widget>[
+                  NeuCard(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                           MaterialPageRoute(builder: (context) => EnterManually()),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            height: side - 30.0,
+                            width: side - 30.0,
+                            child: Image(
+                                fit: BoxFit.contain,
+                                image: AssetImage('images/dine_in.png')),
+                          ),
+                          Container(
+                            width: side,
+                            height: 40.0,
+                            child: Text(
+                              "Dine In",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600, color: AppColor.primarytextcolor
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+
                       ),
-                      Container(
-                        child: Text(
-                          "Dine In",
-                          style: TextStyle(
-                              fontSize: 12, color: AppColor.primarytextcolor),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
              NeuCard(
                 child: GestureDetector(
                   onTap: () {
