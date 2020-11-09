@@ -31,7 +31,7 @@ class _Options extends State<Options> {
                   onTap: () {
                     Navigator.push(
                       context,
-                       MaterialPageRoute(builder: (context) => EnterManually()),
+                       MaterialPageRoute(builder: (context) => Scan()),
                     );
                   },
                   child: Column(

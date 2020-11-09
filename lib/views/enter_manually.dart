@@ -47,7 +47,9 @@ class _EnterManually extends State<EnterManually> {
                     style: TextStyle(
                       color: AppColor.primarytextcolor,
                     )),
-                onTap: () {},
+                onTap: () {
+                  
+                },
               )),
         ],
       ),
@@ -121,7 +123,7 @@ class _EnterManually extends State<EnterManually> {
                       // }
                       setState(() async {
                         Response response = await post(
-                            "http://10.0.2.2:8001/api/reservedtable/$id");
+                            "https://leomenu.com/leoapp/public/api/reservedtable/$id");
 
                         status = jsonDecode(response.body)["availability"][0]
                             ["status"];
