@@ -104,6 +104,8 @@ SharedPreferences sharedPreferences;
                         (Route<dynamic> route) => false);
                   }
                 else{
+                   
+                  
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Options()),

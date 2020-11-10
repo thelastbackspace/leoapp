@@ -201,6 +201,8 @@ void _listenOtp() async {
             _isLoading = false;
           });
           sharedPreferences.setString("token", jsonResponse['data']);
+          sharedPreferences.setInt("user",jsonResponse['user']);
+           print(sharedPreferences.getInt("user"));
           print(sharedPreferences.getString("token"));
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => Options()),

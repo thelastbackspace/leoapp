@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:leo/components/appbar.dart';
 import 'package:leo/components/bottomnavbar.dart';
@@ -16,7 +18,12 @@ import 'package:leo/views/caffiene.dart';
 import 'package:leo/views/juice.dart';
 import 'package:leo/views/desert.dart';
 import 'package:leo/views/burger.dart';
+import 'package:leo/views/cartlistphone.dart';
 import 'package:leo/components/category_tile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 
 class Food extends StatefulWidget {
@@ -33,37 +40,161 @@ class Food extends StatefulWidget {
 class _Food extends State<Food> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey _key = GlobalKey<ScaffoldState>();
-  bool valuefirst = false;
-  bool valuesecond = false;
+  SharedPreferences sharedPreferences;
+
+  bool valueveg = false;
+  bool valuenonveg = false;
   List<Map> filteredList;
-  bool valuethird = false;
+  List<Map> myList;
+  List<Map> cartList;
+  bool valuejain = false;
+  int userid;
+  
+  //bool valuejain = true;
   int index = 0;
   Map<String, dynamic> item;
-  List<Map> cart;
+  List<Map> cart=List();
+  String searchname="";
+  List counter;
+  int value=0;
  @override
   void initState() {
-     filteredList = List();
+    filterList();
+    
+    
+    _nameRetriever();
+    
+    super.initState();
+    
+    print("run");
+  
+     
+  }
+
+   _nameRetriever()  async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userid = prefs.getInt("user");
+    print(userid);
+   }
+
+   
+   addmycart(itemid,userid,restid,itemname,itemtype,itemprice) async {
+    print("Working");
+    
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> data = {'item_id' : itemid, 
+                        'user_id' : userid,
+                        'rest_id' : restid,
+                        'item_name' : itemname,
+                        'item_type' : itemtype,
+                        'item_price' : itemprice,
+                    };
+                    print(data);
+                    
+        var response = await http.post(Uri.encodeFull("https://leomenu.com/leoapp/public/api/addtocart"), body: data);
+        if (response.statusCode == 200) {
+      print('updated');
+    } 
+   }
+     removemycart(itemid,userid,restid,itemname,itemtype,itemprice) async {
+    print("Working");
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      Map<String, dynamic> data = {'item_id' : itemid, 
+                        'user_id' : userid,
+                        'rest_id' : restid,
+                        'item_name' : itemname,
+                        'item_type' : itemtype,
+                        'item_price' : itemprice,
+                    };
+          var response = await http.post(Uri.encodeFull("https://leomenu.com/leoapp/public/api/removefromcart"), body: data);
+        if (response.statusCode == 200) {
+           print('removed');
+    } 
+    } 
+
+  void filterList(){
+    filteredList = List();
+    myList = List();
+    print(valueveg);
+    print(valuenonveg);
+    if((valueveg==true && valuenonveg==true && valuejain==true)||(valueveg==false && valuenonveg==false && valuejain==false)){
       for(item in widget.jsonData["menu"]){
           if(item["menu_category_id"]==widget.categoryId) {
-           filteredList.add(item);
+           myList.add(item);
         }
         }
-    super.initState();
-  }
-
-  void addtocart(item){
-    cart.add(item);
-    print(cart);
+      print("working");
+    }
+    else if(valueveg==true && valuenonveg==false && valuejain==false){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId && item["item_type"]=="Veg") {
+           myList.add(item);
+        }
+        }
+    }
+    else if(valueveg==false && valuenonveg==true && valuejain==false){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId && item["item_type"]=="Non-veg") {
+           myList.add(item);
+        }
+        }
+    }
+    else if(valueveg==false && valuenonveg==false && valuejain==true){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId && item["item_type"]=="Jain") {
+           myList.add(item);
+        }
+        }
+    }
+    else if(valueveg==true && valuenonveg==true && valuejain==false){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId && ((item["item_type"]=="Veg") || (item["item_type"]=="Non-veg"))) {
+           myList.add(item);
+           //print(filteredList);
+        }
+        }
+    }
+    else if(valueveg==true && valuenonveg==false && valuejain==true){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId&& ((item["item_type"]=="Veg") || (item["item_type"]=="Jain")))  {
+           myList.add(item);
+        }
+        }
+    }
+    else if(valueveg==false && valuenonveg==true && valuejain==true){
+      for(item in widget.jsonData["menu"]){
+          if(item["menu_category_id"]==widget.categoryId && ((item["item_type"]=="Non-veg") || (item["item_type"]=="Jain"))) {
+           myList.add(item);
+        }
+        }
+    }
     
 
+    filteredList = myList;
   }
-  void removefromcart(item){
+
+  void addtocart(item) async {
+    cart.add(item);
+    print(cart);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("cart",jsonEncode(cart));
+    print(sharedPreferences.getString("cart"));
+
+ 
+    
+  }
+  void removefromcart(item) async {
+    print("remove");
     cart.remove(item);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("cart",jsonEncode(cart));
+    print(jsonDecode(sharedPreferences.getString("cart")));
     print(cart);
   }
   @override
   Widget build(BuildContext context) {
-    print(filteredList);
+    //print(filteredList);
+    print(userid);
     Color baseColor = Color(0xFF181818);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -136,6 +267,12 @@ class _Food extends State<Food> {
                           color: Colors.white24,
                         ),
                       ),
+                      onChanged: (value) {
+                         setState(() {
+                           searchname=value;
+                            filterList();
+                       });
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter the valid code';
@@ -151,10 +288,13 @@ class _Food extends State<Food> {
                         children: <Widget>[
                           Checkbox(
                             checkColor: AppColor.primarytextcolor,
-                            value: this.valuefirst,
+                            value: this.valueveg,
                             onChanged: (bool value) {
+                              
                               setState(() {
-                                this.valuefirst = value;
+                                this.valueveg = value;
+                                valueveg =this.valueveg;
+                                filterList();
                               });
                             },
                           ),
@@ -170,10 +310,12 @@ class _Food extends State<Food> {
                         children: <Widget>[
                           Checkbox(
                             checkColor: AppColor.primarytextcolor,
-                            value: this.valuesecond,
+                            value: this.valuenonveg,
                             onChanged: (bool value) {
                               setState(() {
-                                this.valuesecond = value;
+                                this.valuenonveg = value;
+                                 valuenonveg =this.valuenonveg;
+                                 filterList();
                               });
                             },
                           ),
@@ -189,10 +331,12 @@ class _Food extends State<Food> {
                         children: <Widget>[
                           Checkbox(
                             checkColor: AppColor.primarytextcolor,
-                            value: this.valuethird,
+                            value: this.valuejain,
                             onChanged: (bool value) {
                               setState(() {
-                                this.valuethird = value;
+                                this.valuejain = value;
+                                valuejain =this.valuejain;
+                                filterList();
                               });
                             },
                           ),
@@ -306,7 +450,8 @@ class _Food extends State<Food> {
                                         GestureDetector(
                                         onTap: () {
                                           print("Tapped -");
-                                          removefromcart(filteredList[index]);
+                                          //removefromcart(filteredList[index]);
+                                           removemycart(filteredList[index]["id"].toString(),userid.toString(),"1",filteredList[index]["item_name"].toString(), filteredList[index]["item_type"].toString(), filteredList[index]["item_rate"].toString());
                                         },
                                         child:Badge(
                                           shape: BadgeShape.square,
@@ -324,6 +469,7 @@ class _Food extends State<Food> {
                                         ),
                                         ),
                                         Badge(
+
                                           shape: BadgeShape.square,
                                           badgeColor: AppColor.bgcolor,
                                           borderRadius:
@@ -340,7 +486,10 @@ class _Food extends State<Food> {
                                         GestureDetector(
                                         onTap: () {
                                           print("Tapped +");
-                                          addtocart(filteredList[index]);
+                                          //addtocart(filteredList[index]);
+                                          addmycart(filteredList[index]["id"].toString(),userid.toString(),"1",filteredList[index]["item_name"].toString(), filteredList[index]["item_type"].toString(), filteredList[index]["item_rate"].toString());
+                                          // var mycart = Provider.of<CartList>(context, listen: false);
+                                          // mycart.addtocart(item);
                                         },
                                         child: Badge(
                                           shape: BadgeShape.square,
@@ -515,4 +664,3 @@ Color getItemBadgeColor(String itemType) {
   }
 }
 }
-
